@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        h2{
+            display:inline-block;
+            width:45%;
+        }
+        .top a{
+            display: inline-block;
+            text-align: center;
+            width: 45%;
+        }
+        a{
+            display: inline-block;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        .left{
+            display: inline-block;
+            vertical-align: top;
+            width: 45%;
+        }
+        .right{
+            display: inline-block;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div>
+    {% if 'idnumber' in request.session %}
+        <div>
+        <h2>Hi, {{firstname}}</h2>
+        </div>
+    {% endif %}
+    </div> -->
+    {% if 'name' in request.session %}
+        <div class='top'>
+        <h2>Hi, {{name}}!!!</h2>
+        <a href="/groups/logout">Log Out</a>
+    </div>
+    {%endif%}
+    <div class='left'>
+        <p>Here are the organizations you may join:</p>
+        <table>    
+        {% for m in all_groups %}
+            <tr>
+                <td><a href='groups/{{m.id}}/smallgroup'>{{m.user.name}}</a></td>
+                <td>{{m.name}}</td>
+                <td>{{m.desc}}</td>
+                <td>{{m.joined_users.name}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        
+        </div>
+        {% if 'name' in request.session %}
+        <div class='right'>
+            {% if messages %}
+            <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+            {% endfor %}
+            </ul>
+            {% endif %}
+            <h3>Create a new organization:</h3>
+            <form action="/groups/add_group" method="POST">
+                {% csrf_token %}
+                <p>Org Name: <input type="text" name="name"></p>
+                <p>Description: <input type="text" name="description"></p>
+                <input type="submit" class="right" value="Add Group">
+            </form>
+        </div>
+        {%endif%}
+</body>
+</html>

@@ -1,0 +1,12 @@
+*{
+    display: block;
+}
+body{
+
+}
+div{
+    width: 500px;
+    height: 600px;
+    border: solid black 10px;
+    background-color: aquamarine;
+}

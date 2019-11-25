@@ -1,0 +1,50 @@
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack>cd D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro>django-admin startproject first_project
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro>cd first_project
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project>mkdir apps
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project>cd apps
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project\apps>python ../manage.py startapp first_app
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project\apps>cd first_app
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project\apps\first_app>nul>urls.py
+Access is denied.
+
+(django) D:\A_learning\abc\codingdojo_week3_python\python_stack\django\django_intro\first_project\apps\first_app>
+
+your_project_name_here/your_project_name_here/settings.py
+INSTALLED_APPS = [
+    'apps.first_app',  <= # added this line. Don't forget the comma!! remember to change name
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+your_project_name_here/your_project_name_here/urls.py
+from django.conf.urls import url, include	# added an import!
+# from django.contrib import admin              # comment out, or just delete
+urlpatterns = [
+    url(r'^', include('apps.first_app.urls')),	# use your app_name here  <= remember to change name
+    # url(r'^admin/', admin.sites.urls)         # comment out, or just delete
+]
+
+your_project_name_here/apps/your_app_name_here/urls.py
+from django.conf.urls import url
+from . import views
+                    
+urlpatterns = [
+    url(r'^$', views.index),
+]
+
+your_project_name_here/apps/your_app_name_here/views.py
+from django.shortcuts import render, HttpResponse
+def index(request):
+    return HttpResponse("this is the equivalent of @app.route('/')!")

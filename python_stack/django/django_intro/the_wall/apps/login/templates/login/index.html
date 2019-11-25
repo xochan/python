@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}">    
+    <script src="{% static 'login/js/script.js' %}"></script>
+    <title>Document</title>
+    <style>
+        .box{
+            display: inline-block;
+            vertical-align: top;
+            margin: 30px;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>registration</h1>
+        <form action="/registration" method="POST">
+            {% csrf_token%}
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td><input type="text" name="first_name"></td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td><input type="text" name="last_name"></td>
+            </tr>
+            <tr>
+                <td>User name</td>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="text" name="pass"></td>
+            </tr>
+            <tr>
+                <td>Confirm PW</td>
+                <td><input type="text" name="pw"></td>
+            </tr>
+        </table>
+        <td><input type="submit" value="Register"></td>
+        </form>
+    </div>
+    <div class="box">
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            {% csrf_token%}
+            <table>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="text" name="email_check"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="text" name="pass_check"></td>
+                </tr>
+            </table>
+            <td><input type="submit" value="Log In"></td>
+            </form>
+    </div>
+    <div class="center">
+        {% if messages %}
+        <ul class="messages">    
+        {% for message in messages %}    
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

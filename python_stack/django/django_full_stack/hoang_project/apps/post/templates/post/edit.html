@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .left{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .right{
+            text-align: right;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .box{
+            border: solid black 1px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Edit Post</h3>
+    <div class="box left">
+    <form action="{{idnumber}}/edit" method="POST">
+        {% csrf_token%}
+        <input type="hidden" name="idnumber" value="{{idnumber}}">
+        <p>Message: {{post}} (post at {{time}})</p>
+        <textarea name="post" class="inch" cols="25" rows="10"></textarea>
+        <input type="submit" class="right" value="Change">
+        <a href="/post">cancel</a>
+    </form>
+    {% if messages %}
+    <ul class="messages">    
+    {% for message in messages %}    
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+    </ul>
+    {%endif%}
+    </div>
+    <div class="right">
+            <a href="/post">Dashboard</a> <a href="/post/logout">Log Out</a>
+    </div>
+</body>
+</html>

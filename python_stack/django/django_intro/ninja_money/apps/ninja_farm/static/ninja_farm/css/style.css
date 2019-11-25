@@ -1,0 +1,24 @@
+input#gold{
+    display: block;
+}
+
+.box{
+    display: inline-block;
+    background-color: aqua;
+    width: 200px;
+    height: 200px;
+}
+
+div.text{
+    height:500px;
+    width:900px;
+    border:1px solid black;
+    font:16px/26px Georgia, Garamond, Serif;
+    overflow:auto;
+}
+.blue{
+    color: blue;
+}
+.red{
+    color: red;
+}

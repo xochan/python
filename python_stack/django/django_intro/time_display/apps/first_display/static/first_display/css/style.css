@@ -1,0 +1,22 @@
+div.box{
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}
+div.box1{
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}
+h3{
+    border: black solid 10px;
+    display: inline-block;
+    width: 300px;
+    height: 50px;
+}
+h1{
+    border: black solid 10px;
+    display: inline-block;
+    width: 400px;
+    height: 100px;
+}

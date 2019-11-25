@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'first_tvshow/css/style.css' %}">    
+    <script src="{% static 'first_tvshow/js/script.js' %}"></script>
+    <title>Document</title>
+
+</head>
+<body>
+<h1>All Shows</h1>
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Title</td>
+            <td>Network</td>
+            <td>Release Date</td>
+            <td>Action</td>
+        </tr>
+        {%for m in all_show%}
+        <tr>
+            <td>{{m.id}}</td>
+            <td>{{m.title}}</td>
+            <td>{{m.network}}</td>
+            <td>{{m.release_date}}</td>
+
+            <td><a href="/shows/{{m.id}}">Show</a></td>
+
+            <td><a href="/shows/{{m.id}}/edit">Edit</a></td>
+
+            <td><a href="/delete/{{m.id}}">Delete</a></td>
+        </tr>
+        {%endfor%}
+    </table>
+
+
+    <a href="/new">Add a New Show</a>
+
+</body>
+</html>

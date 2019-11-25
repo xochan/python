@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'first_tvshow/css/style.css' %}">    
+    <script src="{% static 'first_tvshow/js/script.js' %}"></script>
+    <title>Document</title>
+
+</head>
+<body>
+<h1>Edit show {{id}}</h1>
+<form action="/update" method="POST">
+    {% csrf_token%}
+    <input type="hidden" name='id' value="{{id}}">
+<p>Title</p>
+<input type="text" name='title' value="{{title}}">
+<p>Network</p>
+<input type="text" name='network' value="{{network}}">
+<p>Release Date</p>
+<input type="date" name="release" value="{{release_date}}">
+<p>Description</p>
+<textarea name="desc" style="width: 130px; height:130px;" >{{desc}}</textarea>
+<input type="submit" value="Update">
+</form>
+{% if messages %}
+<ul class="messages">    
+    {% for message in messages %}    
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+</ul>
+{% endif %}
+<a href="/shows">Go Back</a>
+</body>
+</html>

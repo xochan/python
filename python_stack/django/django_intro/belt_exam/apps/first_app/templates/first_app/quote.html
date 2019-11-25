@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .bottom{
+            display: inline-block;
+        }
+        .box{
+            border: solid black 1px;
+            width: 500px;
+        }
+        .top{
+            vertical-align: top;
+        }
+        .left{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .right{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .smallbox{
+            margin: 10px;
+            padding: 10px;
+            border: solid black 1px;
+        }
+        .inch{
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    {% if 'idnumber' in request.session %}
+        <div>
+            <h1>Welcome, {{name}}</h1>
+        </div>
+        <div>
+            <a href="/quote/logout">Log Out</a>
+        </div>
+    {%endif%}
+    </div>
+    <div class="bottom">
+            <div class="left">
+                <div class="box">
+                {% for quote in quote_not_favorite %} 
+                <div class="smallbox">
+                    {%if quote.user.id == idnumber%}
+                    <form action='{{quote.id}}' method="POST">
+                            {% csrf_token%}
+                        <input type="submit" value="Edit">
+                    </form>
+                    <form action='remove_quote' method="POST">
+                            {% csrf_token%}
+                        <input type="hidden" name="idnumber" value="{{quote.id}}">
+                        <input type="submit" value="Delete">
+                    </form>
+                    {%endif%}
+                    <p>{{quote.author}} : {{quote.quote}}</p> 
+                    <label>Posted by:</label> <a href="/quote/users/{{quote.user.id}}">{{quote.user.name}} on {{quote.user.created_at}}</a>
+                    <form action='add_favorite' method="POST">
+                            {% csrf_token%}
+                        <input type="hidden" name="idnumber" value="{{quote.id}}">
+                        <input type="submit" value="Add to Favorites">
+                    </form>
+                </div>
+                {%endfor%}
+            </div>
+            </div>
+            <div class="right">
+                <h3 class="top">Your Favorites</h3>
+                <div class="box">
+                    {% for quote in user_favorite%}
+                    <div class="smallbox">
+                        <p>{{quote.author}} : {{quote.quote}} </p>
+                        <label>Posted by:</label> <a href="/quote/users/{{quote.user.id}}">{{quote.user.name}}</a>
+                        <form action='remove_favorite' method="POST">
+                                {% csrf_token%}
+                            <input type="hidden" name="idnumber" value="{{quote.id}}">
+                            <input type="submit" value="Remove to Favorites">
+                        </form>
+                    </div>
+                    {%endfor%}
+                </div>
+                <div class="box bigbox">
+                    {% if 'idnumber' in request.session %}
+                    <h3>Contribute a Quote</h3>
+                    <form action="post_quote" method="POST">
+                        {% csrf_token%}
+                        <input type="hidden" name="iduser" value="{{idnumber}}">
+                        <label>Quoted By: </label><input type="text" name="author">
+                        <p>Message: </p>
+                        <textarea name="quote" class="inch" cols="25" rows="10"></textarea>
+                        <input type="submit" class="right" value="Submit">
+                    </form>
+                    {% if messages %}
+                    <ul class="messages">    
+                    {% for message in messages %}    
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {%endif%}
+                </div>
+            </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h2>{{name}}</h2>
+    {%if not request.session.idnumber == idnumber%}
+    {%if not friends%}
+    <form action="add_friend" method="POST">
+            {% csrf_token%}
+        <input type="hidden" name="idnumber" value="{{idnumber}}">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+    {%endif%}
+    
+    {% if friends %}
+        <button type="button" class="btn btn-success">Added</button>
+        <form action="delete_friend" method="POST">
+                {% csrf_token%}
+            <input type="hidden" name="idnumber" value="{{idnumber}}">
+            <button type="submit" class="btn btn-danger">Delete Friend</button>
+        </form>
+    {%endif%}
+    {%if not follower%}
+    <form action="add_follow" method="POST">
+            {% csrf_token%}
+        <input type="hidden" name="idnumber" value="{{idnumber}}">
+        <button type="submit" class="btn btn-primary">Follow</button>
+    </form>
+    {%endif%}
+    {%if follow%}
+        <button type="button" class="btn btn-success">Following</button>
+        <form action="delete_follow" method="POST">
+                {% csrf_token%}
+            <input type="hidden" name="idnumber" value="{{idnumber}}">
+            <button type="submit" class="btn btn-danger">Unfollow</button>
+        </form>
+    {%endif%}
+    {%endif%}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/post">XOCHAT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/user/{{request.session.idnumber}}">{{real_name}}<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/{{idnumber}}/friends">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/chat">Chats</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            </ul>
+        </div>
+        <a class="navbar-brand">XOCHAT</a>
+        <form action="checkfriend" class="form-inline" method="POST">
+                {% csrf_token%}
+                <input type="hidden" name="idnumber" value="{{idnumber}}">
+            <input class="form-control mr-sm-2" type="text" name="username" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        </nav>
+        <div class="d-inline">
+        <div>
+                {% if messages %}
+                <ul class="messages">    
+                {% for message in messages %}    
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+    <div>
+        <div class="card">
+            {%if request.session.idnumber == idnumber%}
+            <h3 class="card-title">What's on your mind?</h3>
+            <form action="post_post" method="POST">
+                {% csrf_token%}
+                <input type="hidden" name="iduser" value="{{idnumber}}">
+                <p  class="card-text">Message:</p>
+                <textarea name="post" cols="80" rows="5"></textarea></p>
+                <input type="submit" class="right" value="Submit">
+            </form> 
+            {%endif%}
+        </div>
+    </div>
+    <p>Post total {{count}} post</p>
+    {% for post in posts %} 
+    <div class="card border border-dark w-75 p-3">
+    <h5 class="card-title">{{post.user.username}} :</h5>
+    <p class="card-text">{{post.post}}</p>
+    {%if post.user.id == request.session.idnumber or admin%}
+    <form action='{{post.id}}/edit' method="POST">
+            {% csrf_token%}
+        <input type="submit" value="Edit" class="btn btn-primary">
+    </form>
+    <form action='remove_post' method="POST">
+            {% csrf_token%}
+        <input type="hidden" name="idnumber" value="{{post.id}}">
+        <input type="submit" value="Delete" class="btn btn-primary">
+    </form>
+    {%endif%}
+    </div>
+    {%endfor%}
+        </div>
+    <div class="d-inline">
+        <a href="/post">Dashboard</a> <a href="/post/logout">Log Out</a>
+    </div>
+    </div>  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

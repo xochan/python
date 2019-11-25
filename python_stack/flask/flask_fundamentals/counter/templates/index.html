@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <h1>counter</h1>
+            {{session['count']}}
+        <h1>actual count</h1>
+            {{session['real']}}
+            <form action='/destroy'>
+                <button>reset</button>
+            </form>
+            <form action="/add2">
+                <button>add 2</button>
+            </form>
+            <form action="/add" method='post'>
+                <input type="text" name='num' id="">
+            </form>
+
+    </form>
+</body>
+</html>
